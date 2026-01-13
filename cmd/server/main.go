@@ -5,8 +5,9 @@ import (
 
 	"task-manager/internal/config"
 	"task-manager/internal/db"
-
+	"task-manager/internal/routes"
 	"github.com/gin-gonic/gin"
+
 )
 
 func main() {
@@ -22,6 +23,8 @@ func main() {
 			"env":    cfg.AppEnv,
 		})
 	})
+
+	routes.RegisterAuthRoutes(r)
 
 	log.Printf("Server running on http://localhost:%s", cfg.AppPort)
 	r.Run(":" + cfg.AppPort)
