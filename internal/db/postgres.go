@@ -20,3 +20,4 @@ func ConnectDatabase(cfg *config.Config) {
 	DB = database
 	log.Println("Database connected successfully")
 }
+  
