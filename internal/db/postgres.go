@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"task-manager/internal/config"
+	"task-manager/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,6 +17,12 @@ func ConnectDatabase(cfg *config.Config) {
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
+
+	err = database.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
+	
 
 	DB = database
 	log.Println("Database connected successfully")
