@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"net/http"
 	"task-manager/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,34 @@ func (h *AuthHandler) Register(c *gin.Context) {
 			"name":  user.Name,
 			"email": user.Email,
 		},
+	})
+
+}
+
+
+func (h *AuthHandler) Login(c *gin.Context){
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+    if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest , gin.H{
+			"error": "invalid request body",
+		})
+		return
+	}
+
+	token , err := h.services.Login(req.Email , req.Password)
+	if err!= nil {
+		c.JSON(http.StatusUnauthorized , gin.H{
+			"error" : err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK , gin.H{
+		"token" : token,
 	})
 
 }
