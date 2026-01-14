@@ -25,6 +25,7 @@ func main() {
 	})
 
 	routes.RegisterAuthRoutes(r)
+	routes.RegisterProtectedRoutes(r)
 
 	log.Printf("Server running on http://localhost:%s", cfg.AppPort)
 	r.Run(":" + cfg.AppPort)

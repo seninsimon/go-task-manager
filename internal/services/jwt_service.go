@@ -13,7 +13,7 @@ type JWTService struct {
 
 func NewJWTService() *JWTService {
 	return &JWTService{
-		secretKey: []byte(os.Getenv("SECRET_KEY")),
+		secretKey: []byte(os.Getenv("JWT_SECRET")),
 	}
 }
 
