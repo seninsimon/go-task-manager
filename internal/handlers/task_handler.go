@@ -12,11 +12,15 @@ type TaskHandler struct {
 	service *services.TaskService
 }
 
+func NewTaskHandler() *TaskHandler {
 
-func NewTaskHandler() *TaskHandler{
-	return &TaskHandler{
-		service: services.NewTaskService(),
+	service := services.NewTaskService()
+
+	handler := TaskHandler{
+		service: service,
 	}
+
+	return &handler
 }
 
 func (h *TaskHandler) Create(c *gin.Context) {
@@ -64,15 +68,14 @@ func (h *TaskHandler) Update(c *gin.Context) {
 	c.ShouldBindJSON(&req)
 
 	userID := c.GetUint("user_id")
-	
-	if err := h.service.Update(uint(id) ,userID,  req.Title , req.Status ); err != nil {
-		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+
+	if err := h.service.Update(uint(id), userID, req.Title, req.Status); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "task updated"})
 }
-
 
 func (h *TaskHandler) Delete(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
