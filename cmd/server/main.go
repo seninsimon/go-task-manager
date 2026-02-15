@@ -6,8 +6,9 @@ import (
 	"task-manager/internal/config"
 	"task-manager/internal/db"
 	"task-manager/internal/routes"
-	"github.com/gin-gonic/gin"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	db.ConnectDatabase(cfg)
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -29,5 +31,5 @@ func main() {
 	routes.RegisterTaskRoutes(r)
 
 	log.Printf("Server running on http://localhost:%s", cfg.AppPort)
-	r.Run(":" + cfg.AppPort)
+	r.Run("0.0.0.0:" + cfg.AppPort)
 }
